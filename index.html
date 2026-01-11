@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDI | Future OS Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+       .rationale-chip {
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 2px 10px;
+            font-size: 0.75rem;
+            cursor: help;
+            border: 1px solid #e5e7eb;
+        }
+       .rationale-chip:hover { background: #e5e7eb; }
+       .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <aside class="w-64 bg-slate-900 text-white p-6 flex flex-col hidden md:flex">
+            <h1 class="text-xl font-bold mb-10 tracking-tight">ALADDIN <span class="text-blue-400">Lite</span></h1>
+            <nav class="space-y-4 flex-1">
+                <a href="#" class="block px-4 py-2 bg-slate-800 rounded-lg text-blue-400">Dashboard</a>
+                <a href="#" class="block px-4 py-2 hover:bg-slate-800 rounded-lg">Scenario Planner</a>
+                <a href="#" class="block px-4 py-2 hover:bg-slate-800 rounded-lg">Time Audit</a>
+                <a href="#" class="block px-4 py-2 hover:bg-slate-800 rounded-lg">Skill ROI</a>
+            </nav>
+            <div class="text-xs text-slate-500 border-t border-slate-800 pt-4">
+                Institutional Grade Risk Engine v1.0
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+            
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-2xl font-bold">Personal Future OS</h2>
+                    <p class="text-slate-500">Reducing financial regret through clarity.</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="rationale-chip" title="Data unified from 3 sources: Bank, Broker, and Life Goals. [span_3](start_span)[span_3](end_span)">Unified Data Source &#9432;</span>
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">JD</div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-sm font-medium text-slate-500 mb-2">Net Worth Projection</h3>
+                    <p class="text-3xl font-bold text-slate-900">$142,500</p>
+                    <div class="mt-2 text-xs text-green-600">
+                        +8.2% vs Baseline
+                        <span class="rationale-chip ml-1" title="Based on current drift and low volatility assumptions. [span_4](start_span)[span_4](end_span)">Why?</span>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-sm font-medium text-slate-500 mb-2">Regret Score (Risk)</h3>
+                    <p class="text-3xl font-bold text-orange-500">Moderate</p>
+                    <div class="mt-2 text-xs text-slate-500">
+                        Probability of Goal Failure: 14%
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl shadow-sm bg-blue-50 border-blue-100">
+                    <h3 class="text-sm font-medium text-blue-700 mb-2">Next Best Action</h3>
+                    <p class="text-lg font-semibold text-blue-900">Upskill in AI/Data Science</p>
+                    <div class="mt-2 text-xs text-blue-600">
+                        Est. ROI: 250% over 24 months [span_6](start_span)[span_6](end_span)
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 glass-card p-6 rounded-2xl shadow-sm">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-lg text-slate-800">Monte Carlo Market Simulation</h3>
+                        <select id="scenarioSelect" class="bg-slate-100 border-none text-sm rounded-lg px-2 py-1" onchange="updateSimulation()">
+                            <option value="normal">Normal Market</option>
+                            <option value="ugly">Ugly Case (Recession)</option>
+                            <option value="good">Good Case (Soft Landing)</option>
+                        </select>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="projectionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl shadow-sm">
+                    <h3 class="font-bold text-lg text-slate-800 mb-4">Time Leak Detector</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-xs text-slate-500 block mb-2">Daily Mindless Scrolling (Hrs)</label>
+                            <input type="range" id="scrollHrs" min="0" max="8" value="3" step="0.5" class="w-full" oninput="updateTimeLeak()">
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>0h</span>
+                                <span id="currentHrs" class="font-bold text-blue-600">3h</span>
+                                <span>8h</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900 rounded-xl p-4 text-white">
+                            <p class="text-xs text-slate-400">Wealth Eroded (10 Years)</p>
+                            <p id="wealthLoss" class="text-2xl font-bold text-orange-400">-$45,620</p>
+                            <p class="text-[10px] mt-2 opacity-60 italic">Based on your hourly rate and compound growth.</p>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            A 3-hour daily habit equates to <span class="font-bold text-slate-700">8 years</span> of an average lifetime spent on a screen. 
+         [span_2](start_span)[span_2](end_span)               </p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- GBM Simulation Logic  ---[span_5](start_span)[span_5](end_span)
+        // Formula: Price_t = Price_0 * exp((mu - 0.5 * sigma^2) * t + sigma * W_t)
+        function generateGBM(years, mu, sigma, s0) {
+            const steps = years * 12; // Monthly steps
+            let data = [s0];
+            let currentS = s0;
+            const dt = 1/12;
+
+            for (let i = 1; i <= steps; i++) {
+                const randomShock = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 3) / 1.5; // Normal approx
+                const drift = (mu - 0.5 * sigma * sigma) * dt;
+                const diffusion = sigma * randomShock * Math.sqrt(dt);
+                currentS = currentS * Math.exp(drift + diffusion);
+                data.push(Math.round(currentS));
+            }
+            return data;
+        }
+
+        const labels = Array.from({length: 121}, (_, i) => `Month ${i}`);
+        let chart;
+
+        function initChart() {
+            const ctx = document.getElementById('projectionChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Good Case', data:, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4 },
+                        { label: 'Median Baseline', data:, borderColor: '#3b82f6', tension: 0.4 },
+                        { label: 'Ugly Case', data:, borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', fill: true, tension: 0.4 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { ticks: { callback: value => '$' + value.toLocaleString() } } }
+                }
+            });
+            updateSimulation();
+        }
+
+        function updateSimulation() {
+            const mode = document.getElementById('scenarioSelect').value;
+            let mu = 0.07, sigma = 0.15; // Baseline
+
+            if (mode === 'ugly') { mu = -0.02; sigma = 0.25; } // Recession logic [span_7](start_span)[span_7](end_span)
+            if (mode === 'good') { mu = 0.12; sigma = 0.10; }
+
+            chart.data.datasets.data = generateGBM([span_0](start_span)[span_0](end_span)10, mu, sigma, 142500);
+            chart.data.datasets.data = generateGBM(10, mu + 0.05, sigma - 0.02, 142500);
+            chart.data.datasets.data = generateGBM([span_1](start_span)[span_1](end_span)10, mu - 0.05, sigma + 0.05, 142500);
+            chart.update();
+        }
+
+        function updateTimeLeak() {
+            const hrs = document.getElementById('scrollHrs').value;
+            document.getElementById('currentHrs').innerText = hrs + 'h';
+            
+            // Calc: Loss = hrs * rate * 365 days * 10 years + compound interest
+            const hourlyRate = 25;
+            const annualLoss = hrs * hourlyRate * 365;
+            let wealthLost = 0;
+            for(let i=0; i<10; i++) {
+                wealthLost = (wealthLost + annualLoss) * 1.07;
+            }
+            document.getElementById('wealthLoss').innerText = '-$' + Math.round(wealthLost).toLocaleString();
+        }
+
+        window.onload = () => {
+            initChart();
+            updateTimeLeak();
+        };
+    </script>
+</body>
+</html>
